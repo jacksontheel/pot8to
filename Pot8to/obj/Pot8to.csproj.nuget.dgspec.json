@@ -1,0 +1,126 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/student/Documents/Pot8to Chip-8/Pot8to/Pot8to.csproj": {}
+  },
+  "projects": {
+    "/home/student/Documents/Pot8to Chip-8/Chip8/Chip8.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/student/Documents/Pot8to Chip-8/Chip8/Chip8.csproj",
+        "projectName": "Chip8",
+        "projectPath": "/home/student/Documents/Pot8to Chip-8/Chip8/Chip8.csproj",
+        "packagesPath": "/home/student/.nuget/packages/",
+        "outputPath": "/home/student/Documents/Pot8to Chip-8/Chip8/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/student/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.202/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/student/Documents/Pot8to Chip-8/Pot8to/Pot8to.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/student/Documents/Pot8to Chip-8/Pot8to/Pot8to.csproj",
+        "projectName": "Pot8to",
+        "projectPath": "/home/student/Documents/Pot8to Chip-8/Pot8to/Pot8to.csproj",
+        "packagesPath": "/home/student/.nuget/packages/",
+        "outputPath": "/home/student/Documents/Pot8to Chip-8/Pot8to/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/student/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {
+              "/home/student/Documents/Pot8to Chip-8/Chip8/Chip8.csproj": {
+                "projectPath": "/home/student/Documents/Pot8to Chip-8/Chip8/Chip8.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "MonoGame.Content.Builder.Task": {
+              "target": "Package",
+              "version": "[3.8.0.1641, )"
+            },
+            "MonoGame.Framework.DesktopGL": {
+              "target": "Package",
+              "version": "[3.8.0.1641, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.202/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
