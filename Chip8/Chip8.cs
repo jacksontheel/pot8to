@@ -60,6 +60,8 @@ namespace Chip8
             soundTimer--;
             pc += 2;
 
+            Console.WriteLine ("Op: {0:X}", nextOp);
+
             switch((nextOp & 0xF000) >> 12)
             {
                 case 0x0:
@@ -83,11 +85,20 @@ namespace Chip8
                 case 0x7:
                     op_0x7XNN(nextOp);
                     break;
+                case 0x8:
+                    switchOp_8(nextOp);
+                    break;
                 case 0x9:
                     op_0x9XY0(nextOp);
                     break;
                 case 0xA:
                     op_0xANNN(nextOp);
+                    break;
+                case 0xB:
+                    op_0xBNNN(nextOp);
+                    break;
+                case 0xC:
+                    op_0xCXNN(nextOp);
                     break;
                 case 0xD:
                     op_0xDXYN(nextOp);
@@ -103,12 +114,64 @@ namespace Chip8
             
         }
 
+        private void switchOp_8(ushort nextOp)
+        {
+            switch(nextOp & 0x000F)
+            {
+                case 0:
+                    op_0x8XY0(nextOp);
+                    break;
+                case 1:
+                    op_0x8XY1(nextOp);
+                    break;
+                case 2:
+                    op_0x8XY2(nextOp);
+                    break;
+                case 3:
+                    op_0x8XY3(nextOp);
+                    break;
+                case 4:
+                    op_0x8XY4(nextOp);
+                    break;
+                case 5:
+                    op_0x8XY5(nextOp);
+                    break;
+                case 6:
+                    op_0x8XY6(nextOp);
+                    break;
+                case 7:
+                    op_0x8XY7(nextOp);
+                    break;
+                case 0xE:
+                    op_0x8XYE(nextOp);
+                    break;
+            }
+        }
+
         private void switchOp_F(ushort nextOp)
         {
             switch(nextOp & 0x00FF)
             {
+                case 0x07:
+                    op_0xFX07(nextOp);
+                    break;
+                case 0x15:
+                    op_0xFX15(nextOp);
+                    break;
+                case 0x1E:
+                    op_0xFX1E(nextOp);
+                    break;
                 case 0x29:
                     op_0xFX29(nextOp);
+                    break;
+                case 0x33:
+                    op_0xFX33(nextOp);
+                    break;
+                case 0x55:
+                    op_0xFX55(nextOp);
+                    break;
+                case 0x65:
+                    op_0xFX65(nextOp);
                     break;
             }
         }
@@ -123,6 +186,9 @@ namespace Chip8
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void op_0x00E0()
         {
             for(int i = 0; i < 64*32; i++)
@@ -150,6 +216,10 @@ namespace Chip8
 
         
 
+        /// <summary>
+        /// Skips the next instruction if VX = NN
+        /// </summary>
+        /// <param name="opCode"></param>
         private void op_0x3XNN(ushort opCode)
         {
             if(compareRegisterAndValue(opCode))
@@ -158,6 +228,10 @@ namespace Chip8
             }
         }
 
+        /// <summary>
+        /// Skips the next instruction if VX != NN
+        /// </summary>
+        /// <param name="opCode"></param>
         private void op_0x4XNN(ushort opCode)
         {
             if(!compareRegisterAndValue(opCode))
@@ -182,14 +256,6 @@ namespace Chip8
         private void op_0x5XY0(ushort opCode)
         {
             if(compareRegisterAndRegister(opCode))
-            {
-                pc += 2;
-            }
-        }
-
-        private void op_0x9XY0(ushort opCode)
-        {
-            if(!compareRegisterAndRegister(opCode))
             {
                 pc += 2;
             }
@@ -221,15 +287,7 @@ namespace Chip8
             var registerToSet = ((opCode & 0x0F00) >> 8);
             var valueToAdd = (opCode & 0x00FF);
 
-            int valueToSet = registers[registerToSet] + valueToAdd;
-            if(valueToAdd < 0xFF)
-            {
-                registers[registerToSet] = (byte) valueToSet;
-            }
-            else
-            {
-                registers[registerToSet] = 0xFF;
-            }
+            registers[registerToSet] = (byte) (registers[registerToSet] + valueToAdd);
         }
 
         private void op_0x8XY0(ushort opCode)
@@ -271,12 +329,93 @@ namespace Chip8
 
             var registerAddResult = registers[register1] + registers[register2];
             registers[register1] = (byte) (registerAddResult % 256);
+            if(registerAddResult > 255) // Set VF in case of overflow
+            {
+                registers[0xF] = 1;
+            }
+        }
+
+        private void op_0x8XY5(ushort opCode)
+        {
+            var register1 = ((opCode & 0x0F00) >> 8);
+            var register2 = ((opCode & 0x00F0) >> 4);
+
+            if(registers[register1] > registers[register2]) // Set VF in case of NO underflow
+            {
+                registers[0xF] = 1;
+            }
+
+            registers[register1] = (byte) (registers[register1] - registers[register2]);
+
+        }
+
+        private void op_0x8XY6(ushort opCode)
+        {
+            var register1 = ((opCode & 0x0F00) >> 8);
+            var register2 = ((opCode & 0x00F0) >> 4);
+
+            // registers[register1] = registers[register2];
+
+            registers[0xF] = (byte) (registers[register1] & 1); // Save shifted-out bit to VF
+            registers[register1] = (byte) (registers[register1] >> 1);
+        }
+
+        private void op_0x8XY7(ushort opCode)
+        {
+            var register1 = ((opCode & 0x0F00) >> 8);
+            var register2 = ((opCode & 0x00F0) >> 4);
+
+            if(registers[register2] > registers[register1]) // Set VF in case of NO underflow
+            {
+                registers[0xF] = 1;
+            }
+            else
+            {
+                registers[0xF] = 0;
+            }
+
+            registers[register1] = (byte) (registers[register2] - registers[register1]);
+
+        }
+
+        private void op_0x8XYE(ushort opCode)
+        {
+            var register1 = ((opCode & 0x0F00) >> 8);
+            var register2 = ((opCode & 0x00F0) >> 4);
+
+            // registers[register1] = registers[register2];
+
+            registers[0xF] = ((registers[register1] & 0x80) == 0)? (byte) 0 : (byte) 1; // Save shifted-out bit to VF
+            registers[register1] = (byte) (registers[register1] << 1);
+        }
+
+        private void op_0x9XY0(ushort opCode)
+        {
+            if(!compareRegisterAndRegister(opCode))
+            {
+                pc += 2;
+            }
         }
 
         private void op_0xANNN(ushort opCode)
         {
             opCode = (ushort) (opCode & 0x0FFF);
             indexRegister = opCode;
+        }
+
+        private void op_0xBNNN(ushort opCode)
+        {
+            opCode = (ushort) (opCode & 0x0FFF);
+            pc = (ushort) (opCode + registers[0]);
+        }
+
+        private void op_0xCXNN(ushort opCode)
+        {
+            var register1 = ((opCode & 0x0F00) >> 8);
+            var toAnd = (opCode & 0x00FF);
+
+            var rand = new Random();
+            registers[register1] = (byte) (rand.Next() & toAnd);
         }
 
         private void op_0xDXYN(ushort opCode)
@@ -303,7 +442,7 @@ namespace Chip8
                                 display[affectNum] = !display[affectNum]; //flip bool
                                 if(!display[affectNum]) //If bool was turned off (collision)
                                 {
-                                    registers[15] = 1;
+                                    registers[0xF] = 1;
                                 }
                             }
                         }
@@ -323,11 +462,68 @@ namespace Chip8
 
         }
 
+        private void op_0xFX07(ushort opCode)
+        {
+            var register1 = ((opCode & 0x0F00) >> 8);
+
+            registers[register1] = delayTimer;
+        }
+
+        private void op_0xFX15(ushort opCode)
+        {
+            var registerValue = registers[((opCode & 0x0F00) >> 8)];
+
+            delayTimer = registerValue;
+        }
+
+        private void op_0xFX1E(ushort opCode)
+        {
+            var registerValue = registers[((opCode & 0x0F00) >> 8)];
+
+            indexRegister += registerValue;
+        }
+
         private void op_0xFX29(ushort opCode)
         {
             var registerValue = registers[((opCode & 0x0F00) >> 8)] & 0x00FF; //Only take the last nibble of the register value
 
-            indexRegister = (ushort)  (50 + (registerValue * 5));
+            indexRegister = (ushort)  (0x50 + (registerValue * 5));
         }
+
+        private void op_0xFX33(ushort opCode)
+        {
+            var valueToSplit = registers[((opCode & 0x0F00) >> 8)];
+
+            for(int i = 0; i < 3; i++)
+            {
+                memory[indexRegister + 2 - i] = (byte) (valueToSplit % 10);
+                valueToSplit /= 10;
+            }
+        }
+
+        private void op_0xFX55(ushort opCode)
+        {
+            var registerNum = ((opCode & 0x0F00) >> 8);
+
+            for(int i = 0; i < (registerNum + 1); i++)
+            {
+                memory[indexRegister + i] = registers[i];
+
+                // indexRegister++;
+            }
+        }
+
+        private void op_0xFX65(ushort opCode)
+        {
+            var registerNum = ((opCode & 0x0F00) >> 8);
+
+            for(int i = 0; i < (registerNum + 1); i++)
+            {
+                registers[i] = memory[indexRegister + i];
+
+                // indexRegister++;
+            }
+        }
+
     }
 }

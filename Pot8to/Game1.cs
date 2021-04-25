@@ -13,7 +13,9 @@ namespace Pot8to
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        private int cyclesPerSecond = 60;
+        private RenderTarget2D _nativeRenderTarget;
+
+        private int cyclesPerSecond = 600;
 
         private double secondsSinceLastUpdate = 0;
 
@@ -29,13 +31,16 @@ namespace Pot8to
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            _graphics.PreferredBackBufferWidth = 64;  // set this value to the desired width of your window
-            _graphics.PreferredBackBufferHeight = 32;   // set this value to the desired height of your window
+            _nativeRenderTarget = new RenderTarget2D(GraphicsDevice, 64, 32);
+
+            _graphics.PreferredBackBufferWidth = 640;  // set this value to the desired width of your window
+            _graphics.PreferredBackBufferHeight = 320;   // set this value to the desired height of your window
             _graphics.ApplyChanges();
 
             // Construct chip8 and load bin file.
             cpu = new Cpu();
-            loadBin("Bins/test.ch8");
+            //loadBin("Pot8to/bin/Debug/netcoreapp3.1/roms/Coin Flipping [Carmelo Cortez, 1978].ch8");
+            loadBin("Pot8to/bin/Debug/netcoreapp3.1/roms/Maze [David Winter, 199x].ch8");
 
             base.Initialize();
         }
@@ -54,11 +59,12 @@ namespace Pot8to
                 Exit();
 
             // TODO: Add your update logic here
-            secondsSinceLastUpdate += gameTime.ElapsedGameTime.TotalSeconds;
+            secondsSinceLastUpdate += 1;
             if(secondsSinceLastUpdate > (1/cyclesPerSecond))
             {
                 secondsSinceLastUpdate = 0;
 
+                cpu.cycle();
                 cpu.cycle();
 
                 base.Update(gameTime);
@@ -67,8 +73,8 @@ namespace Pot8to
 
         protected override void Draw(GameTime gameTime)
         {
-
             // TODO: Add your drawing code here
+            GraphicsDevice.SetRenderTarget(_nativeRenderTarget);
             _spriteBatch.Begin();
             Texture2D rect = new Texture2D(_graphics.GraphicsDevice, 64, 32);
 
@@ -79,11 +85,23 @@ namespace Pot8to
                 {
                     data[i] = Color.SkyBlue;
                 }
+                else
+                {
+                    data[i] = Color.Black;
+                }
             }
             rect.SetData(data);
-
             Vector2 coor = new Vector2(0, 0);
             _spriteBatch.Draw(rect, coor, Color.White);
+            _spriteBatch.End();
+
+            GraphicsDevice.SetRenderTarget(null);
+            _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            
+            Point p = new Point(0,0);
+            Point size = new Point(640, 320);
+            Rectangle scaledRect = new Rectangle(p, size);
+            _spriteBatch.Draw(_nativeRenderTarget, scaledRect, Color.White);
             _spriteBatch.End();
 
             base.Draw(gameTime);
