@@ -40,7 +40,7 @@ namespace Pot8to
             // Construct chip8 and load bin file.
             cpu = new Cpu();
             //loadBin("Pot8to/bin/Debug/netcoreapp3.1/roms/Coin Flipping [Carmelo Cortez, 1978].ch8");
-            loadBin("Pot8to/bin/Debug/netcoreapp3.1/roms/Maze [David Winter, 199x].ch8");
+            loadBin("Bins/BC_test.ch8");
 
             base.Initialize();
         }

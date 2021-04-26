@@ -333,6 +333,10 @@ namespace Chip8
             {
                 registers[0xF] = 1;
             }
+            else
+            {
+                registers[0xF] = 0;
+            }
         }
 
         private void op_0x8XY5(ushort opCode)
@@ -343,6 +347,9 @@ namespace Chip8
             if(registers[register1] > registers[register2]) // Set VF in case of NO underflow
             {
                 registers[0xF] = 1;
+            }
+            else{
+                registers[0xF] = 0;
             }
 
             registers[register1] = (byte) (registers[register1] - registers[register2]);

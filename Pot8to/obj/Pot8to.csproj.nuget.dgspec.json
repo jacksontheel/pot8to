@@ -94,10 +94,6 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "dependencies": {
-            "MonoGame.Content.Builder.Task": {
-              "target": "Package",
-              "version": "[3.8.0.1641, )"
-            },
             "MonoGame.Framework.DesktopGL": {
               "target": "Package",
               "version": "[3.8.0.1641, )"
