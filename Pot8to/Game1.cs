@@ -15,17 +15,20 @@ namespace Pot8to
 
         private RenderTarget2D _nativeRenderTarget;
 
+        private string pathArg;
+
         private int cyclesPerSecond = 600;
 
         private double secondsSinceLastUpdate = 0;
 
         private Cpu cpu;
 
-        public Game1()
+        public Game1(string path)
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            pathArg = path;
         }
 
         protected override void Initialize()
@@ -39,8 +42,9 @@ namespace Pot8to
 
             // Construct chip8 and load bin file.
             cpu = new Cpu();
-            //loadBin("Pot8to/bin/Debug/netcoreapp3.1/roms/Coin Flipping [Carmelo Cortez, 1978].ch8");
-            loadBin("Bins/BC_test.ch8");
+
+            loadBin(pathArg);
+
 
             base.Initialize();
         }
@@ -64,8 +68,10 @@ namespace Pot8to
             {
                 secondsSinceLastUpdate = 0;
 
-                cpu.cycle();
-                cpu.cycle();
+                for(int i = 0; i < 10; i++)
+                {
+                    cpu.cycle();
+                }
 
                 base.Update(gameTime);
             }
@@ -83,11 +89,11 @@ namespace Pot8to
             {
                 if(cpu.display[i])
                 {
-                    data[i] = Color.SkyBlue;
+                    data[i] = Color.HotPink;
                 }
                 else
                 {
-                    data[i] = Color.Black;
+                    data[i] = Color.MidnightBlue;
                 }
             }
             rect.SetData(data);

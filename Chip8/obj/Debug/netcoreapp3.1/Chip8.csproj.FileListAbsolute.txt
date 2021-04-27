@@ -1,9 +1,0 @@
-/home/student/Documents/Pot8to Chip-8/Chip8/bin/Debug/netcoreapp3.1/Chip8.deps.json
-/home/student/Documents/Pot8to Chip-8/Chip8/bin/Debug/netcoreapp3.1/Chip8.dll
-/home/student/Documents/Pot8to Chip-8/Chip8/bin/Debug/netcoreapp3.1/Chip8.pdb
-/home/student/Documents/Pot8to Chip-8/Chip8/obj/Debug/netcoreapp3.1/Chip8.csprojAssemblyReference.cache
-/home/student/Documents/Pot8to Chip-8/Chip8/obj/Debug/netcoreapp3.1/Chip8.AssemblyInfoInputs.cache
-/home/student/Documents/Pot8to Chip-8/Chip8/obj/Debug/netcoreapp3.1/Chip8.AssemblyInfo.cs
-/home/student/Documents/Pot8to Chip-8/Chip8/obj/Debug/netcoreapp3.1/Chip8.csproj.CoreCompileInputs.cache
-/home/student/Documents/Pot8to Chip-8/Chip8/obj/Debug/netcoreapp3.1/Chip8.dll
-/home/student/Documents/Pot8to Chip-8/Chip8/obj/Debug/netcoreapp3.1/Chip8.pdb

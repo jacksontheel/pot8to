@@ -65,10 +65,13 @@ namespace Chip8
             switch((nextOp & 0xF000) >> 12)
             {
                 case 0x0:
-                    op_0x00E0();
+                    switchOp_0(nextOp);
                     break;
                 case 0x1:
                     op_0x1NNN(nextOp);
+                    break;
+                case 0x2:
+                    op_0x2NNN(nextOp);
                     break;
                 case 0x3:
                     op_0x3XNN(nextOp);
@@ -106,12 +109,23 @@ namespace Chip8
                 case 0xF:
                     switchOp_F(nextOp);
                     break;
+                default:
+                    Console.WriteLine("Unrecognized OpCode");
+                    break;
             }
         }
 
-        private void switchOp_0()
+        private void switchOp_0(ushort nextOp)
         {
-            
+           switch(nextOp & 0x00FF)
+           {
+               case 0xE0:
+                    op_0x00E0();
+                    break;
+                case 0xEE:
+                    op_0x00EE();
+                    break;
+           }
         }
 
         private void switchOp_8(ushort nextOp)
@@ -145,6 +159,9 @@ namespace Chip8
                 case 0xE:
                     op_0x8XYE(nextOp);
                     break;
+                default:
+                    Console.WriteLine("Unrecognized OpCode");
+                    break;
             }
         }
 
@@ -172,6 +189,9 @@ namespace Chip8
                     break;
                 case 0x65:
                     op_0xFX65(nextOp);
+                    break;
+                default:
+                    Console.WriteLine("Unrecognized OpCode");
                     break;
             }
         }
