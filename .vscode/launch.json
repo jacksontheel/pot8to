@@ -10,8 +10,8 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Pot8to/bin/Debug/netcoreapp3.1/Pot8to.dll",
-            "args": "\"/home/student/Documents/Pot8to Chip-8/Pot8to/Bins/Chip-8 Games/Space Invaders [David Winter] (alt).ch8\"",
+            "program": "${workspaceFolder}/Pot8to/bin/Debug/net5/Pot8to.dll",
+            "args": "\"/home/student/Documents/Pot8to Chip-8/Games/Chip-8 Games/Space Invaders [David Winter] (alt).ch8\"",
             // "args": "\"/home/student/Documents/Pot8to Chip-8/Pot8to/Bins/Chip-8 Games/Tank.ch8\"",
             "cwd": "${workspaceFolder}/Pot8to",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
