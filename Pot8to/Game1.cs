@@ -21,6 +21,8 @@ namespace Pot8to
 
         private double secondsSinceLastUpdate = 0;
 
+        private IInput inputManager;
+
         private Cpu cpu;
 
         public Game1(string path)
@@ -29,6 +31,8 @@ namespace Pot8to
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             pathArg = path;
+
+            inputManager = new InputGame();
         }
 
         protected override void Initialize()
@@ -70,7 +74,7 @@ namespace Pot8to
 
                 for(int i = 0; i < 10; i++)
                 {
-                    cpu.cycle();
+                    cpu.cycle(inputManager.input());
                 }
 
                 base.Update(gameTime);
@@ -113,7 +117,11 @@ namespace Pot8to
             base.Draw(gameTime);
         }
 
-        void loadBin(string fileName)
+        /// <summary>
+        /// Finds a file and loads it into the Chip-8 emulator.
+        /// </summary>
+        /// <param name="fileName">The path to the file to load.</param>
+        private void loadBin(string fileName)
         {
             var byteList = new List<byte>();
             if(File.Exists(fileName))
@@ -125,8 +133,8 @@ namespace Pot8to
                         byteList.Add(reader.ReadByte());
                     }
                 }
+                cpu.loadBin(byteList);
             }
-            cpu.loadBin(byteList);
         }
     }
 }

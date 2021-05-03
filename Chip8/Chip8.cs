@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Chip8
 {
@@ -13,6 +14,8 @@ namespace Chip8
         private byte delayTimer;
         private byte soundTimer;
         private byte[] registers;
+
+        private IEnumerable<byte> input;
 
         public Cpu()
         {
@@ -53,8 +56,9 @@ namespace Chip8
             }
         }
 
-        public void cycle()
+        public void cycle(IEnumerable<byte> input)
         {
+            this.input = input;
             var nextOp = BitConverter.ToUInt16(new byte[] { memory[pc + 1], memory[pc] });
             delayTimer--;
             soundTimer--;
@@ -105,6 +109,9 @@ namespace Chip8
                     break;
                 case 0xD:
                     op_0xDXYN(nextOp);
+                    break;
+                case 0xE:
+                    switchOp_E(nextOp);
                     break;
                 case 0xF:
                     switchOp_F(nextOp);
@@ -165,12 +172,28 @@ namespace Chip8
             }
         }
 
+        private void switchOp_E(ushort nextOp)
+        {
+            switch(nextOp & 0x00FF)
+            {
+                case 0x9E:
+                    op_0xEX9E(nextOp);
+                    break;
+                case 0xA1:
+                    op_0xEXA1(nextOp);
+                    break;
+            }
+        }
+
         private void switchOp_F(ushort nextOp)
         {
             switch(nextOp & 0x00FF)
             {
                 case 0x07:
                     op_0xFX07(nextOp);
+                    break;
+                case 0x0A:
+                    op_0xFX0A(nextOp);
                     break;
                 case 0x15:
                     op_0xFX15(nextOp);
@@ -489,11 +512,43 @@ namespace Chip8
 
         }
 
+        private void op_0xEX9E(ushort opCode)
+        {
+            var registerValue = registers[((opCode & 0x0F00) >> 8)];
+            if(input.Contains(registerValue))
+            {
+                pc += 2;
+            }
+        }
+
+        private void op_0xEXA1(ushort opCode)
+        {
+            var registerValue = registers[((opCode & 0x0F00) >> 8)];
+            if(!input.Contains(registerValue))
+            {
+                pc += 2;
+            }
+        }
+        
         private void op_0xFX07(ushort opCode)
         {
             var register1 = ((opCode & 0x0F00) >> 8);
 
             registers[register1] = delayTimer;
+        }
+
+        private void op_0xFX0A(ushort opCode)
+        {
+            var register1 = ((opCode & 0x0F00) >> 8);
+
+            if(input.Any())
+            {
+                registers[register1] = input.First();
+            }
+            else
+            {
+                pc -= 2;
+            }
         }
 
         private void op_0xFX15(ushort opCode)
