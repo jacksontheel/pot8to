@@ -7,7 +7,7 @@ namespace Pot8to
         [STAThread]
         static void Main(string[] args)
         {
-            using (var game = new Game1(args[0]))
+            using (var game = new Game1(args))
                 game.Run();
         }
     }

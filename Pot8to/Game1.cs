@@ -11,11 +11,12 @@ namespace Pot8to
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
+
         private SpriteBatch _spriteBatch;
 
         private RenderTarget2D _nativeRenderTarget;
 
-        private string pathArg;
+        private string[] arguments;
 
         private int cyclesPerSecond = 600;
 
@@ -25,14 +26,12 @@ namespace Pot8to
 
         private Cpu cpu;
 
-        public Game1(string path)
+        public Game1(string[] args)
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            pathArg = path;
-
-            inputManager = new InputGame();
+            arguments = args;
         }
 
         protected override void Initialize()
@@ -47,8 +46,23 @@ namespace Pot8to
             // Construct chip8 and load bin file.
             cpu = new Cpu();
 
-            loadBin(pathArg);
+            if(arguments.Length >= 2)
+            {
+                if(arguments[1] == "t")
+                {
+                    inputManager = new InputTyping();
+                }
+                else
+                {
+                    inputManager = new InputGame();
+                }
+            }
+            else
+            {
+                inputManager = new InputGame();
+            }
 
+            loadBin(arguments[0]);
 
             base.Initialize();
         }
