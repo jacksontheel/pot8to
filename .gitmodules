@@ -1,0 +1,3 @@
+[submodule "ChipSharp8"]
+	path = ChipSharp8
+	url = https://github.com/jacksontheel/ChipSharp8
