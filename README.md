@@ -1,6 +1,6 @@
 # Pot8to
 ## A Chip-8 emulator
-Pot8to aims to be an accurate emulation of a Chip-8, to provide as authentic an experience as possible. Like most Chip-8 emulators, Pot8to was written as an introduction to emulation, a stepping stone to emulating more complex hardware. Pot8to was written in C# using the Monogame framework. The emulation itself was handled here in the ChipSharp8 repository, while this repository handles things like the display and input.
+Pot8to aims to be an accurate emulation of a Chip-8, to provide as authentic an experience as possible. Like most Chip-8 emulators, Pot8to was written as an introduction to emulation, a stepping stone to emulating more complex hardware. Pot8to was written in C# using the Monogame framework. The emulation itself was handled [here](https://github.com/jacksontheel/ChipSharp8) in the ChipSharp8 repository, while this repository handles things like the display and input.
 
 ## Getting Started
 
