@@ -10,7 +10,7 @@ Download the .NET SDK from [here](https://dotnet.microsoft.com/download) to buil
 ### Installation
 To clone the repository and its submodule, run
 ```
-`$ git clone --recurse-submodules https://github.com/jacksontheel/pot8to.git
+$ git clone --recurse-submodules https://github.com/jacksontheel/pot8to.git
 ````
 in a command line with git installed.
 
